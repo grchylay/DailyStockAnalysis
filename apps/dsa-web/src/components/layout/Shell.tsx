@@ -19,24 +19,22 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
   const { t } = useUiLanguage();
 
   useEffect(() => {
-    if (!mobileOpen) {
-      return undefined;
-    }
-
+    if (!mobileOpen) return undefined;
     const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setMobileOpen(false);
-      }
+      if (window.innerWidth >= 1024) setMobileOpen(false);
     };
-
     window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, [mobileOpen]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative h-dvh w-full overflow-hidden bg-background text-foreground">
+      {/* Full-page background image */}
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <img src="/bg.jpg" alt="" className="h-full w-full object-cover opacity-[0.6]" />
+      </div>
+
+      {/* Mobile nav */}
       <div className="pointer-events-none fixed inset-x-0 top-3 z-40 flex items-start justify-between px-3 lg:hidden">
         <button
           type="button"
@@ -52,19 +50,33 @@ export const Shell: React.FC<ShellProps> = ({ children }) => {
         </div>
       </div>
 
-      <div className="mx-auto flex min-h-screen w-full max-w-[1680px] px-3 py-3 sm:px-4 sm:py-4 lg:px-5">
+      {/* Global semi-transparent cards */}
+      <style>{`
+        .terminal-card, .gradient-border-card, .home-panel-card, .settings-surface-panel,
+        .home-report-hero, .home-insight-card, .chat-bubble-user, .chat-bubble-ai,
+        .backtest-table-wrapper, .session-item, [class*="bg-card"]:not(aside)
+        {
+          background-color: color-mix(in srgb, var(--card) 70%, transparent) !important;
+          backdrop-filter: blur(8px) !important;
+          -webkit-backdrop-filter: blur(8px) !important;
+        }
+        .dark .terminal-card, .dark .gradient-border-card, .dark .home-panel-card {{
+          background-color: color-mix(in srgb, var(--card) 65%, transparent) !important;
+        }}
+      `}</style>
+      {/* Main layout */}
+      <div className="relative z-10 flex h-full w-full">
         <aside
           className={cn(
-            'sticky top-3 z-40 hidden shrink-0 overflow-visible rounded-[1.5rem] border border-[var(--shell-sidebar-border)] bg-card/72 p-2.5 shadow-soft-card backdrop-blur-sm transition-[width] duration-200 lg:flex',
-            'max-h-[calc(100vh-1.5rem)] self-start sm:top-4 sm:max-h-[calc(100vh-2rem)]',
-            collapsed ? 'w-[64px]' : 'w-[136px]'
+            'sticky top-0 z-40 hidden h-full shrink-0 overflow-hidden border-r border-[var(--shell-sidebar-border)] bg-card/40 backdrop-blur-md transition-[width] duration-200 lg:flex',
+            collapsed ? 'w-[64px]' : 'w-[220px]'
           )}
           aria-label={t('layout.desktopSidebar')}
         >
           <SidebarNav collapsed={collapsed} variant="rail" onNavigate={() => setMobileOpen(false)} />
         </aside>
 
-        <main className="min-h-0 min-w-0 flex-1 pt-14 lg:pl-3 lg:pt-0 touch-pan-y">
+        <main className="relative min-h-0 min-w-0 flex-1 overflow-hidden bg-background/40 backdrop-blur-[2px] touch-pan-y">
           {children ?? <Outlet />}
         </main>
       </div>

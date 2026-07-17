@@ -1,7 +1,7 @@
 import type React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from "motion/react";
-import { Lock, Loader2, Cpu, TrendingUp, Network, ShieldCheck } from "lucide-react";
+import { Lock, Loader2, Network, ShieldCheck } from "lucide-react";
 import { Button, Input, ParticleBackground } from '../components/common';
 import { UiLanguageToggle } from '../components/i18n/UiLanguageToggle';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -24,6 +24,21 @@ const LoginPage: React.FC = () => {
   const rawRedirect = searchParams.get('redirect') ?? '';
   const redirect =
     rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/';
+
+  // Theme-aware logo: detect dark/light from <html> class
+  const [isDark, setIsDark] = useState(true);
+  const logoRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    const check = () => {
+      const root = document.documentElement;
+      setIsDark(root.classList.contains('dark') || !root.classList.contains('light'));
+    };
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
 
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -116,18 +131,20 @@ const LoginPage: React.FC = () => {
             className="pointer-events-none absolute -top-[20vh] -z-10 opacity-80"
           >
             <div className="relative flex h-[120vh] w-[120vh] items-center justify-center rounded-full border border-[var(--login-accent-soft)] bg-gradient-to-br from-[var(--login-accent-soft)] to-[hsl(214_100%_20%_/_0.18)] shadow-[inset_0_0_200px_var(--login-accent-glow)] blur-[4px]">
-              <Cpu className="h-[70vh] w-[70vh] text-[hsl(200_80%_22%_/_0.4)] brightness-50" />
-              <TrendingUp className="absolute h-[25vh] w-[25vh] translate-x-[15vh] translate-y-[15vh] text-emerald-900/30 brightness-50" />
+              <img src="/favicon-v2.svg" alt="" className="h-[60vh] w-[60vh] opacity-[0.18]" />
             </div>
           </motion.div>
 
           <div className="mt-8 flex flex-col items-center">
-            <h2 className="text-4xl font-extrabold tracking-tighter text-[var(--login-text-primary)] sm:text-6xl">
-              <span className="bg-gradient-to-r from-[var(--login-text-primary)] via-[var(--login-text-primary)] to-[var(--login-text-secondary)] bg-clip-text text-transparent">DAILY </span>
-              <span className="bg-gradient-to-r from-[var(--login-brand-start)] to-[var(--login-brand-end)] bg-clip-text text-transparent drop-shadow-[0_0_20px_var(--login-accent-glow)]">STOCK</span>
-            </h2>
-            <h3 className="mt-1 text-xl font-bold uppercase tracking-[0.5em] text-[var(--login-text-muted)]">
-              Analysis Engine
+            {/* Theme-aware brand logo — auto-switches with theme */}
+            <img
+              ref={logoRef}
+              src={isDark ? "/logo-dark.svg" : "/logo-light.svg"}
+              alt="如意金股"
+              className="h-24 w-auto sm:h-28"
+            />
+            <h3 className="mt-3 text-base font-bold uppercase tracking-[0.5em] text-[var(--login-text-muted)]">
+              AI Quant · Daily Analysis
             </h3>
           </div>
 
@@ -138,7 +155,7 @@ const LoginPage: React.FC = () => {
             className="mt-6 flex items-center gap-2 rounded-full border border-[var(--login-accent-border)] bg-[var(--login-accent-soft)] px-3 py-1 text-[10px] font-medium text-[var(--login-accent-text)] backdrop-blur-sm"
           >
             <Network className="h-3 w-3" />
-            <span>V3.X QUANTITATIVE SYSTEM</span>
+            <span>AI-QUANT · RUYI V3</span>
           </motion.div>
         </motion.div>
 

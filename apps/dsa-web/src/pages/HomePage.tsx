@@ -1267,10 +1267,10 @@ const HomePage: React.FC = () => {
   return (
     <div
       data-testid="home-dashboard"
-      className="flex h-[calc(100vh-5rem)] w-full flex-col overflow-hidden md:flex-row sm:h-[calc(100vh-5.5rem)] lg:h-[calc(100vh-2rem)]"
+      className="flex h-full w-full flex-col overflow-hidden md:flex-row"
     >
-      <div className="flex-1 flex flex-col min-h-0 min-w-0 max-w-full lg:max-w-6xl mx-auto w-full">
-        <header className="relative z-30 flex min-w-0 flex-shrink-0 items-center overflow-visible px-3 py-3 md:px-4 md:py-4">
+      <div className="flex-1 flex flex-col min-h-0 min-w-0 max-w-full w-full">
+        <header className="relative z-30 flex min-w-0 flex-shrink-0 items-center overflow-visible px-4 py-3 md:px-6 md:py-4">
           <div className="flex min-w-0 flex-1 flex-col gap-2.5 md:flex-row md:items-center">
             <div className="flex min-w-0 flex-1 items-center gap-2.5">
               <button
@@ -1467,10 +1467,10 @@ const HomePage: React.FC = () => {
           <section
             ref={dashboardScrollRef}
             data-testid="home-dashboard-scroll"
-            className="flex-1 min-w-0 min-h-0 overflow-x-auto overflow-y-auto px-3 pb-4 md:px-6 touch-pan-y"
+            className="flex-1 min-w-0 min-h-0 overflow-x-auto overflow-y-auto px-4 pb-4 md:px-6 touch-pan-y"
           >
             {marketReviewNotice ? (
-              <div className="mb-3">
+              <div className="mb-4">
                 <InlineAlert
                   variant={marketReviewNotice.variant}
                   title={marketReviewNotice.title}
@@ -1481,7 +1481,7 @@ const HomePage: React.FC = () => {
             ) : null}
 
             {marketReviewError ? (
-              <div className="mb-3">
+              <div className="mb-4">
                 <ApiErrorAlert
                   error={marketReviewError}
                   className="mb-1"
@@ -1493,9 +1493,8 @@ const HomePage: React.FC = () => {
             {marketReviewReport ? (
               <MarketReviewReportView
                 content={marketReviewReport}
-                payload={marketReviewPayload}
                 reportLanguage={liveMarketReviewLanguage}
-                className="mb-3"
+                className="mb-4"
               />
             ) : null}
 
@@ -1511,7 +1510,7 @@ const HomePage: React.FC = () => {
                 <DashboardStateBlock title={t('home.loadingReport')} loading />
               </div>
             ) : !marketReviewReport && selectedReport ? (
-              <div className={isHistoryTrendOpen ? 'max-w-6xl space-y-4 pb-8' : 'max-w-4xl space-y-4 pb-8'}>
+              <div className="space-y-5 pb-8">
                 <div className="flex flex-wrap items-center justify-end gap-2">
                   {!isMarketReviewHistoryReport ? (
                     <>
