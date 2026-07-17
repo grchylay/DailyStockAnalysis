@@ -148,8 +148,8 @@
 ### 方式二：[客户端配置教程](https://www.bilibili.com/video/BV11FEb66Eyr/) / 本地运行 / Docker 部署
 
 ```bash
-# 克隆项目
-git clone https://github.com/ZhuLinsen/daily_stock_analysis.git && cd daily_stock_analysis
+# 克隆项目（基于 ZhuLinsen/daily_stock_analysis）
+git clone https://github.com/grchylay/RuyiDailyStockAnalysis.git && cd RuyiDailyStockAnalysis
 
 # 安装依赖
 pip install -r requirements.txt
@@ -284,7 +284,7 @@ python main.py --webui-only
 
 ## 📄 License
 
-[MIT License](LICENSE) © 2026 ZhuLinsen
+[MIT License](LICENSE) © 2026 柯冰妍
 
 欢迎在二次开发或引用时注明本仓库来源，感谢支持项目持续维护。
 

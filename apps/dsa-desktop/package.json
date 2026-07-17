@@ -17,7 +17,7 @@
   },
   "build": {
     "appId": "com.daily-stock-analysis.desktop",
-    "productName": "Daily Stock Analysis",
+    "productName": "RuyiDailyStockAnalysis",
     "directories": {
       "output": "dist"
     },

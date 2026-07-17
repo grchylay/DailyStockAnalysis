@@ -1,6 +1,6 @@
 # 🚀 部署指南
 
-本文档介绍如何将 A股自选股智能分析系统部署到服务器。
+本文档介绍如何将如意金股（RuyiDailyStockAnalysis）部署到服务器。
 
 ## 📋 部署方案对比
 
@@ -169,7 +169,7 @@ sudo vim /etc/systemd/system/stock-analyzer.service
 内容：
 ```ini
 [Unit]
-Description=A股自选股智能分析系统
+Description=如意金股（RuyiDailyStockAnalysis）
 After=network.target
 
 [Service]
